@@ -1,1 +1,39 @@
+body {
+  margin:0;
+  font-family:Arial;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+  background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+  color:white;
+}
 
+.card {
+  background:rgba(255,255,255,0.1);
+  backdrop-filter:blur(15px);
+  padding:30px;
+  border-radius:20px;
+  width:300px;
+  text-align:center;
+}
+
+input {
+  width:100%;
+  padding:10px;
+  margin:10px 0;
+  border:none;
+  border-radius:8px;
+}
+
+button {
+  width:100%;
+  padding:10px;
+  margin:5px 0;
+  border:none;
+  border-radius:8px;
+  background:#00c896;
+  color:white;
+  font-weight:bold;
+  cursor:pointer;
+}
