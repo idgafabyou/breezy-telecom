@@ -1,1 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dashboard</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
 
+<div class="card">
+<h1>Dashboard</h1>
+<p id="welcome"></p>
+<button onclick="logout()">Logout</button>
+</div>
+
+<script>
+const token = localStorage.getItem("token");
+
+if (!token) window.location.href = "/";
+
+fetch("/api/dashboard", {
+  headers: {
+    "Authorization": "Bearer " + token
+  }
+})
+.then(res => {
+  if (!res.ok) throw new Error();
+  return res.json();
+})
+.then(data => {
+  document.getElementById("welcome").innerText = data.message;
+})
+.catch(() => {
+  window.location.href = "/";
+});
+
+function logout(){
+  localStorage.removeItem("token");
+  window.location.href="/";
+}
+</script>
+</body>
+</html>
