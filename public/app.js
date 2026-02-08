@@ -1,33 +1,35 @@
-async function register() {
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
-
-  const res = await fetch("/api/register", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email, password })
-  });
-
+async function loadNumbers() {
+  const res = await fetch("/api/gateway/numbers");
   const data = await res.json();
-  document.getElementById("msg").innerText = data.message;
+
+  const container = document.getElementById("numbersList");
+  container.innerHTML = "";
+
+  data.forEach(n => {
+    container.innerHTML += `
+      <div class="number-card">
+        <h4>${n.number}</h4>
+        <p>${n.country}</p>
+        <p>$${n.price}</p>
+        <button onclick="buyNumber('${n.id}', ${n.price})">Buy</button>
+      </div>
+    `;
+  });
 }
 
-async function login() {
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
+async function buyNumber(id, price) {
+  const token = localStorage.getItem("token");
 
-  const res = await fetch("/api/login", {
+  const res = await fetch("/api/gateway/buy", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email, password })
+    headers: {
+      "Content-Type": "application/json",
+      "authorization": token
+    },
+    body: JSON.stringify({ numberId: id, price })
   });
 
   const data = await res.json();
-
-  if (data.token) {
-    localStorage.setItem("token", data.token);
-    window.location.href = "/dashboard.html";
-  } else {
-    document.getElementById("msg").innerText = data.message;
-  }
+  alert(data.msg);
+  loadNumbers();
 }
